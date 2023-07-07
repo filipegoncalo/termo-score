@@ -14,12 +14,6 @@ $rules = [
     'blank_line_after_namespace'                  => true,
     'blank_line_after_opening_tag'                => false,
     'blank_line_before_statement'                 => ['statements' => ['break', 'continue', 'declare', 'return', 'throw', 'try']],
-    'braces'                                      => [
-        'allow_single_line_closure'                   => false,
-        'position_after_anonymous_constructs'         => 'same',
-        'position_after_control_structures'           => 'same',
-        'position_after_functions_and_oop_constructs' => 'next',
-    ],
     'cast_spaces'                                 => ['space' => 'none'],
     // 'class_attributes_separation' => [
     //     'elements' => ['method', 'property'],
