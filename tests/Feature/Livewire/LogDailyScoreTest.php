@@ -2,6 +2,9 @@
 
 use App\Http\Livewire\LogDailyScore;
 use App\Models\DailyScore;
+use App\Rules\DetailRule;
+use App\Rules\GameIdRule;
+use App\Rules\ScoreRule;
 
 use function Pest\Laravel\assertDatabaseHas;
 use function Pest\Livewire\livewire;
@@ -9,7 +12,7 @@ use function Pest\Livewire\livewire;
 it('should be able to save the daily score and track the id of the game', function ($score, $expectGameId, $expectScore, $expectDetail){
 
     livewire(LogDailyScore::class)
-        ->set('score', $score)
+        ->set('data', $score)
         ->call('save');
 
     $score = DailyScore::query()->first();
