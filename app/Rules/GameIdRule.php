@@ -14,7 +14,8 @@ class GameIdRule implements ValidationRule
         }
     }
 
-    public function passes( $value)  {
+    public function passes($value)
+    {
         //return preg_match('/^#+(\d{1,3})$/', $value);
     }
 }

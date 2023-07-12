@@ -14,9 +14,9 @@ use Livewire\Component;
 
 class LogDailyScore extends Component
 {
-    public ?string $data = null;
+    public ?string $data   = null;
     public ?string $gameId = null;
-    public ?string $score = null;
+    public ?string $score  = null;
     public ?string $detail = null;
 
     public function render(): Factory | View | Application
@@ -26,20 +26,20 @@ class LogDailyScore extends Component
 
     public function save()
     {
-        [$this->gameId, $this->score, $this->detail] = (new DailyEntry)->parseData($this->data);
+        [$this->gameId, $this->score, $this->detail] = (new DailyEntry())->parseData($this->data);
         //dd([$this->gameId, $this->score, $this->detail]);
 
         $this->validate([
             'gameId' => ['required', new GameIdRule()],
-            'score' => ['required', new ScoreRule()],
+            'score'  => ['required', new ScoreRule()],
             'detail' => ['required', new DetailRule()]
         ]);
 
         DailyScore::query()
             ->create([
                 'game_id' => $this->gameId,
-                'score' => $this->score,
-                'detail' => $this->detail
+                'score'   => $this->score,
+                'detail'  => $this->detail
             ]);
     }
 }

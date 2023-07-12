@@ -19,7 +19,7 @@ class ScoreRule implements ValidationRule
         }
     }
 
-    public function passes($attribute, $value) 
+    public function passes($attribute, $value)
     {
         //return preg_match('/^(([1-6]|x)\/6)$/', $value);
     }
