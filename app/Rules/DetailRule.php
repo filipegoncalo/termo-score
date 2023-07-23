@@ -20,9 +20,4 @@ class DetailRule implements ValidationRule
             }
         }
     }
-
-    public function passes($attribute, $value): bool
-    {
-        return true;
-    }
 }

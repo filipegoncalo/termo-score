@@ -18,9 +18,4 @@ class ScoreRule implements ValidationRule
             $fail('format is invalid.');
         }
     }
-
-    public function passes($attribute, $value)
-    {
-        //return preg_match('/^(([1-6]|x)\/6)$/', $value);
-    }
 }

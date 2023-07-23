@@ -13,9 +13,4 @@ class GameIdRule implements ValidationRule
             $fail('format is invalid.');
         }
     }
-
-    public function passes($value)
-    {
-        //return preg_match('/^#+(\d{1,3})$/', $value);
-    }
 }

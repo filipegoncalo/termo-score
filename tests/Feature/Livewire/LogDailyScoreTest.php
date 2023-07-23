@@ -2,22 +2,23 @@
 
 use App\Http\Livewire\LogDailyScore;
 use App\Models\DailyScore;
-
+use App\Models\WordOfDay;
+use App\Rules\WordIsValidRule;
 use function Pest\Livewire\livewire;
 
-it('should be able to save the daily score and track the id of the game', function ($score, $expectGameId, $expectScore, $expectDetail) {
-
+it('should be able to save the daily score and track the id of the game', function ($score, $expectedGameId, $expectedScore, $expectedDetail) {
     livewire(LogDailyScore::class)
         ->set('data', $score)
-        ->set('word', 'termo')
+        ->set('word', 'teste')
+        ->set('word_confirmation', 'teste')
         ->call('save');
 
     $score = DailyScore::query()->first();
-
+    //dd($expectedGameId);
     expect($score)
-        ->game_id->toBe($expectGameId)
-        ->score->toBe($expectScore)
-        ->detail->toBe($expectDetail);
+        ->game_id->toBe($expectedGameId)
+        ->score->toBe($expectedScore)
+        ->detail->toBe($expectedDetail);
 })->with([
     '1.6' => ['joguei term.ooo #555 1/6 🔥 1' . PHP_EOL . PHP_EOL . '🟩🟩🟩🟩🟩', '#555', '1/6', '🟩🟩🟩🟩🟩'],
     '2.6' => ['joguei term.ooo #555 2/6 🔥 1' . PHP_EOL . PHP_EOL . '🟨🟩🟩⬛⬛' . PHP_EOL . '🟩🟩🟩🟩🟩', '#555', '2/6', '🟨🟩🟩⬛⬛' . PHP_EOL . '🟩🟩🟩🟩🟩'],
@@ -26,6 +27,23 @@ it('should be able to save the daily score and track the id of the game', functi
     '5.6' => ['joguei term.ooo #555 5/6 🔥 1' . PHP_EOL . PHP_EOL . '⬛⬛🟨🟨⬛' . PHP_EOL . '🟨🟨⬛🟨⬛' . PHP_EOL . '🟨🟩⬛⬛🟩' . PHP_EOL . '⬛🟩🟩🟨🟩' . PHP_EOL . '🟩🟩🟩🟩🟩', '#555', '5/6', '⬛⬛🟨🟨⬛' . PHP_EOL . '🟨🟨⬛🟨⬛' . PHP_EOL . '🟨🟩⬛⬛🟩' . PHP_EOL . '⬛🟩🟩🟨🟩' . PHP_EOL . '🟩🟩🟩🟩🟩'],
     '6.6' => ['joguei term.ooo #555 6/6 🔥 1' . PHP_EOL . PHP_EOL . '⬛⬛⬛⬛🟨' . PHP_EOL . '⬛🟩⬛⬛🟨' . PHP_EOL . '⬛🟩🟩🟩🟩' . PHP_EOL . '⬛🟩🟩🟩🟩' . PHP_EOL . '⬛🟩🟩🟩🟩' . PHP_EOL . '🟩🟩🟩🟩🟩', '#555', '6/6', '⬛⬛⬛⬛🟨' . PHP_EOL . '⬛🟩⬛⬛🟨' . PHP_EOL . '⬛🟩🟩🟩🟩' . PHP_EOL . '⬛🟩🟩🟩🟩' . PHP_EOL . '⬛🟩🟩🟩🟩' . PHP_EOL . '🟩🟩🟩🟩🟩'],
     'x.6' => ['joguei term.ooo #555 x/6 🔥 1' . PHP_EOL . PHP_EOL . '🟨⬛⬛⬛🟨' . PHP_EOL . '⬛🟩⬛⬛🟨' . PHP_EOL . '⬛🟩🟨🟩⬛' . PHP_EOL . '🟨🟩⬛🟩⬛' . PHP_EOL . '⬛🟩🟩🟩🟩' . PHP_EOL . '⬛🟩🟩🟩🟩', '#555', 'x/6', '🟨⬛⬛⬛🟨' . PHP_EOL . '⬛🟩⬛⬛🟨' . PHP_EOL . '⬛🟩🟨🟩⬛' . PHP_EOL . '🟨🟩⬛🟩⬛' . PHP_EOL . '⬛🟩🟩🟩🟩' . PHP_EOL . '⬛🟩🟩🟩🟩'],
+]);
+
+it("should warn the user if we can't save the daily score because of the format", function ($score) {
+    livewire(LogDailyScore::class)
+        ->set('data', $score)
+        ->set('word', 'teste')
+        ->set('word_confirmation', 'teste')
+        ->call('save')
+        ->assertHasNoErrors([
+            'gameId' => GameIdRule::class,
+            'score'  => ScoreRule::class,
+            'detail' => DetailRule::class,
+        ]);
+})->with([
+    ['jeremias' . PHP_EOL . PHP_EOL . 'outro texto'],
+    ['joguei term.ooo 81 12/6 🔥 1' . PHP_EOL . PHP_EOL . '🐧🐧🐧🐧🐧🐧🐧🐧'],
+    ['joguei term.ooo 81 4/3 🔥 1' . PHP_EOL . PHP_EOL . '🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩'],
 ]);
 
 it('should request for the word of the day', function () {
@@ -55,7 +73,24 @@ test('if word already exist for the given game id we should  check if is valid',
 
     livewire(LogDailyScore::class)
         ->set('data', $data)
-        ->set('word', 'paulo')
+        ->set('word', 'teste')
+        ->set('word_confirmation', 'teste')
         ->call('save')
-        ->assertHasErrors(['word' => WordIsValid::class]);
+        ->assertHasNoErrors(['word' => WordIsValidRule::class]);
+});
+
+test('if word doesnt exists, we will set the status as pending and warn the user that the score is being calculated', function(){
+    $data = 'joguei term.ooo #555 1/6 🔥 1' . PHP_EOL . PHP_EOL . '🟩🟩🟩🟩🟩';
+
+    livewire(LogDailyScore::class)
+        ->set('data', $data)
+        ->set('word', 'teste')
+        ->set('word_confirmation', 'teste')
+        ->call('save')
+        ->assertHasNoErrors(['word' => WordIsValidRule::class]);
+
+        expect(DailyScore::query()->first())
+            ->status->toBe('peding')
+            ->word->toBe('teste')
+            ->game_id->toBe('#555');
 });

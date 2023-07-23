@@ -4,19 +4,17 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class() extends Migration {
+return new class extends Migration
+{
     /**
      * Run the migrations.
      */
     public function up(): void
     {
-        Schema::create('daily_scores', function (Blueprint $table) {
+        Schema::create('word_of_days', function (Blueprint $table) {
             $table->id();
             $table->unsignedSmallInteger('game_id');
-            $table->string('score');
-            $table->string('detail');
-            $table->string('word', 5)->nullable();
-            $table->string('status')->default('peding');
+            $table->string('word', 5);
             $table->timestamps();
         });
     }
@@ -26,6 +24,6 @@ return new class() extends Migration {
      */
     public function down(): void
     {
-        Schema::dropIfExists('daily_scores');
+        Schema::dropIfExists('word_of_days');
     }
 };
