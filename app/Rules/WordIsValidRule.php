@@ -20,9 +20,8 @@ class WordIsValidRule implements ValidationRule
     public function validate(string $attribute, mixed $value, Closure $fail): void
     {
         $exists = WordOfDay::query()
-        ->where('game_id', $this->gameId)//str($this->gameId)->replace('#', '')
+        ->where('game_id', str($this->gameId)->replace('#', ''))
         ->where('word', $value); 
-
         if (!$exists) {
             $fail('game_id nao exist');
         }
