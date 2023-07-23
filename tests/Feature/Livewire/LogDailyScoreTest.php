@@ -52,22 +52,22 @@ it('should request for the word of the day', function () {
         ->assertHasErrors(['word' => 'required']);
 });
 
-test('word shuld have 5 letters', function(){
+test('word shuld have 5 letters', function () {
     livewire(LogDailyScore::class)
         ->set('word', '1234')
         ->call('save')
         ->assertHasErrors(['word' => 'size']);
 });
 
-it('should ask for confirmation of the word of the day', function(){
+it('should ask for confirmation of the word of the day', function () {
     livewire(LogDailyScore::class)
         ->set('word', 'termo')
-        ->set('word_confirmation','')
+        ->set('word_confirmation', '')
         ->call('save')
         ->assertHasErrors(['word' => 'confirmed']);
 });
 
-test('if word already exist for the given game id we should  check if is valid', function(){
+test('if word already exist for the given game id we should  check if is valid', function () {
     WordOfDay::factory()->create(['word' => 'termo', 'game_id' => 555]);
     $data = 'joguei term.ooo #555 1/6 🔥 1' . PHP_EOL . PHP_EOL . '🟩🟩🟩🟩🟩';
 
@@ -79,7 +79,7 @@ test('if word already exist for the given game id we should  check if is valid',
         ->assertHasNoErrors(['word' => WordIsValidRule::class]);
 });
 
-test('if word doesnt exists, we will set the status as pending and warn the user that the score is being calculated', function(){
+test('if word doesnt exists, we will set the status as pending and warn the user that the score is being calculated', function () {
     $data = 'joguei term.ooo #555 1/6 🔥 1' . PHP_EOL . PHP_EOL . '🟩🟩🟩🟩🟩';
 
     livewire(LogDailyScore::class)
@@ -89,8 +89,8 @@ test('if word doesnt exists, we will set the status as pending and warn the user
         ->call('save')
         ->assertHasNoErrors();
 
-        expect(DailyScore::query()->first())
-            ->status->toBe('peding')
-            ->word->toBe('teste')
-            ->game_id->toBe(555);
+    expect(DailyScore::query()->first())
+        ->status->toBe('peding')
+        ->word->toBe('teste')
+        ->game_id->toBe(555);
 });

@@ -8,7 +8,6 @@ use App\Rules\DetailRule;
 use App\Rules\GameIdRule;
 use App\Rules\ScoreRule;
 use App\Rules\WordIsValidRule;
-use Doctrine\Inflector\Rules\Word;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
@@ -16,13 +15,13 @@ use Livewire\Component;
 
 class LogDailyScore extends Component
 {
-    public ?string $word = null;
+    public ?string $word              = null;
     public ?string $word_confirmation = null;
-    public ?string $data   = null;
-    public ?string $gameId = null;
-    public ?string $score  = null;
-    public ?string $detail = null;
-    public ?string $message = null;
+    public ?string $data              = null;
+    public ?string $gameId            = null;
+    public ?string $score             = null;
+    public ?string $detail            = null;
+    public ?string $message           = null;
 
     public function render(): Factory | View | Application
     {
@@ -52,11 +51,10 @@ class LogDailyScore extends Component
                 'game_id' => $this->gameId,
                 'score'   => $this->score,
                 'detail'  => $this->detail,
-                'word' => $this->word,
-                'status' => 'peding'
+                'word'    => $this->word,
+                'status'  => 'peding'
             ]);
 
-        
-            $this->message = 'Your score is being calculated';
+        $this->message = 'Your score is being calculated';
     }
 }

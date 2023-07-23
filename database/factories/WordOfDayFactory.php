@@ -17,8 +17,8 @@ class WordOfDayFactory extends Factory
     public function definition(): array
     {
         return [
-            'game_id' => $this->faker->numberBetween(1,100),
-            'word' => $this->faker->text(5)
+            'game_id' => $this->faker->numberBetween(1, 100),
+            'word'    => $this->faker->text(5)
         ];
     }
 }
