@@ -59,6 +59,9 @@
         "pestify": [
             "./vendor/bin/pest"
         ],
+        "stan":[
+            "./vendor/bin/phpstan analyse"
+        ],
         "fix": [
             "./vendor/bin/php-cs-fixer fix --verbose --using-cache=no"
         ]
