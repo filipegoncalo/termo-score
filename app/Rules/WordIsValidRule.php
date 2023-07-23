@@ -22,7 +22,7 @@ class WordIsValidRule implements ValidationRule
         $exists = WordOfDay::query()
         ->where('game_id', str($this->gameId)->replace('#', ''))
         ->where('word', $value);
-        if (empty($exists)) {
+        if (!$exists) {
             $fail('game_id nao exist');
         }
     }
