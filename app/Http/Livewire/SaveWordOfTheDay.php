@@ -10,9 +10,9 @@ use Livewire\Component;
 
 class SaveWordOfTheDay extends Component
 {
-    public ?string $word = null;
+    public ?string $word              = null;
     public ?string $word_confirmation = null;
-    public ?string $game_id = null;
+    public ?string $game_id           = null;
 
     public function render(): Factory | View | Application
     {
@@ -22,13 +22,13 @@ class SaveWordOfTheDay extends Component
     public function save()
     {
         $this->validate([
-            'word' => ['required', 'confirmed', 'string', 'size:5'],
+            'word'    => ['required', 'confirmed', 'string', 'size:5'],
             'game_id' => ['required', 'integer', 'unique:word_of_days,game_id']
         ]);
 
         WordOfDay::query()
             ->create([
-                'word' => $this->word,
+                'word'    => $this->word,
                 'game_id' => $this->game_id,
             ]);
     }

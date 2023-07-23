@@ -2,7 +2,10 @@
 
 use App\Events\WordOfDayCreatedEvent;
 use App\Http\Livewire\SaveWordOfTheDay;
+use App\Jobs\CheckDailyScoreJob;
+use App\Models\DailyScore;
 use App\Models\WordOfDay;
+use Illuminate\Support\Facades\Bus;
 use Illuminate\Support\Facades\Event;
 
 use function Pest\Livewire\livewire;
@@ -55,4 +58,22 @@ it('should dispatch an event WordOfDayCreated', function(){
         ->call('save');
 
     Event::assertDispatched(WordOfDayCreatedEvent::class);
+});
+
+it('should create jobs for each daily score not computed after creating a new WordOfDay', function(){
+    Bus::fake();
+
+    DailyScore::factory()->create(['game_id' => 555, 'status' => 'computed']);
+    $score = DailyScore::factory()->create(['game_id' => 555, 'status' => 'pending']);
+
+    livewire(SaveWordOfTheDay::class)
+        ->set('word', 'teste')
+        ->set('word_confirmation', 'teste')
+        ->set('game_id', 555)
+        ->call('save');
+
+    Bus::assertDispatched(CheckDailyScoreJob::class, function($job) use ($score){
+        return $job->wordOfDay->word === 'teste' && $job->dailyScore->is($score);
+    });
+    Bus::assertDispatchedTimes(CheckDailyScoreJob::class, 1);
 });

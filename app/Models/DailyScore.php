@@ -14,7 +14,7 @@ class DailyScore extends Model
     protected static function booted()
     {
         static::creating(function ($model) {
-            $model->game_id = str($model->game_id)->replace('#', '');
+            $model->game_id = (int)str($model->game_id)->replace('#', '')->toString();
         });
     }
 }

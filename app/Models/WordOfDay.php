@@ -13,6 +13,6 @@ class WordOfDay extends Model
     protected $guarded = [];
 
     protected $dispatchesEvents = [
-        'created' => WordOfDayCreatedEvent::class
+        'created' => WordOfDayCreatedEvent::class,
     ];
 }
