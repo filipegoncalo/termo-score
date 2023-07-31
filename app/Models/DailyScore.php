@@ -40,6 +40,8 @@ class DailyScore extends Model
 {
     use HasFactory;
 
+    const STATUS_FINISHED = 'finished'; 
+
     protected $guarded = [];
 
     public function gameId(): Attribute

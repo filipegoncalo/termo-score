@@ -17,8 +17,10 @@ class CheckDailyScoreJob implements ShouldQueue
     /**
      * Create a new job instance.
      */
-    public function __construct(public WordOfDay $wordOfDay, public DailyScore $dailyScore)
-    {   
+    public function __construct(
+        public WordOfDay  $wordOfDay,
+        public DailyScore $dailyScore
+    ) {
         //
     }
 
@@ -27,6 +29,18 @@ class CheckDailyScoreJob implements ShouldQueue
      */
     public function handle(): void
     {
-        //
+        $points = match ($this->dailyScore->score) {
+            '1/6'   => 10,
+            '2/6'   => 5,
+            '3/6'   => 4,
+            '4/6'   => 2,
+            '5/6'   => 1,
+            '6/6'   => 0,
+            'X/6'   => -1,
+            default => null
+        };
+        $this->dailyScore->points = $points;
+        $this->dailyScore->status = DailyScore::STATUS_FINISHED;
+        $this->dailyScore->save();
     }
 }
