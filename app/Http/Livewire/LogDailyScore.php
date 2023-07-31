@@ -33,7 +33,6 @@ class LogDailyScore extends Component
     public function save()
     {
         $this->validateBaseData();
-
         $this->validateGameScore();
         
         $score = DailyScore::query()
@@ -70,13 +69,16 @@ class LogDailyScore extends Component
 
         $this->validate([
             'word' => new WordIsValidRule($this->gameId)
-        ]);   
+        ]);
     }
 
-    private function dispatchJobIfWordOfDayExists(DailyScore $score) : void
+    private function dispatchJobIfWordOfDayExists(DailyScore $score): void
     {
         if ($wordOfDay = WordOfDay::whereGameId($score->game_id)->first()) {
-            CheckDailyScoreJob::dispatch($wordOfDay, $score);
+            CheckDailyScoreJob::dispatch(
+                $wordOfDay,
+                $score
+            );
         }
     }
 }

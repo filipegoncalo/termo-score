@@ -18,7 +18,7 @@ class CheckDailyScoreJob implements ShouldQueue
      * Create a new job instance.
      */
     public function __construct(public WordOfDay $wordOfDay, public DailyScore $dailyScore)
-    {
+    {   
         //
     }
 
