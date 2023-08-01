@@ -27,13 +27,22 @@ class CheckDailyScoreJob implements ShouldQueue
     /**
      * Execute the job.
      */
-    public function handle(): void
+    public function handle()
     {
-        if ($this->wordOfDay->game_id !== $this->dailyScore->game_id) {
+        if ($this->wordOfDayAndDailyScoreHasDifferentGameId()) {
             return;
         }
 
-       $points = match ($this->dailyScore->score) {
+        [$points, $status] = $this->checkPointsAndStatus();
+
+        $this->dailyScore->points = $points;
+        $this->dailyScore->status = $status;
+        $this->dailyScore->save();
+    }
+
+    private function checkPointsAndStatus(): array
+    {
+        $points = match ($this->dailyScore->score) {
             '1/6'   => 10,
             '2/6'   => 5,
             '3/6'   => 4,
@@ -45,14 +54,17 @@ class CheckDailyScoreJob implements ShouldQueue
         };
 
         $status = DailyScore::STATUS_FINISHED;
-        
+
         if ($this->wordOfDay->word !== $this->dailyScore->word) {
             $points = 0;
             $status = DailyScore::STATUS_WRONG_WORD;
         }
 
-        $this->dailyScore->points = $points;
-        $this->dailyScore->status = $status;
-        $this->dailyScore->save();
+        return [$points, $status];
+    }
+
+    private function wordOfDayAndDailyScoreHasDifferentGameId(): bool
+    {
+        return $this->wordOfDay->game_id !== $this->dailyScore->game_id;
     }
 }
