@@ -40,7 +40,9 @@ class DailyScore extends Model
 {
     use HasFactory;
 
-    const STATUS_FINISHED = 'finished'; 
+    const STATUS_FINISHED = 'finished';
+    const STATUS_WRONG_WORD = 'wrong_word';
+    const STATUS_PENDING = 'pending';
 
     protected $guarded = [];
 
