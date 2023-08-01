@@ -29,6 +29,10 @@ class CheckDailyScoreJob implements ShouldQueue
      */
     public function handle(): void
     {
+        if ($this->wordOfDay->game_id !== $this->dailyScore->game_id) {
+            return;
+        }
+
        $points = match ($this->dailyScore->score) {
             '1/6'   => 10,
             '2/6'   => 5,
@@ -41,7 +45,7 @@ class CheckDailyScoreJob implements ShouldQueue
         };
 
         $status = DailyScore::STATUS_FINISHED;
-        //dd([$this->wordOfDay->word, $this->dailyScore->word]);
+        
         if ($this->wordOfDay->word !== $this->dailyScore->word) {
             $points = 0;
             $status = DailyScore::STATUS_WRONG_WORD;
