@@ -1,3 +1,3 @@
 <div>
-    {{-- Stop trying to control. --}}
+    Save Word Of The Day
 </div>
