@@ -23,7 +23,7 @@ class LogDailyScore extends Component
     public ?string $gameId            = null;
     public ?string $score             = null;
     public ?string $detail            = null;
-    public ?string $message           = null;
+    public ?string $status            = null;
 
     public function render(): Factory | View | Application
     {
@@ -44,7 +44,7 @@ class LogDailyScore extends Component
                 'status'  => 'peding'
             ]);
 
-        $this->message = 'Your score is being calculated';
+        $this->status = 'Your score is being calculated';
 
         $this->dispatchJobIfWordOfDayExists($score);
     }
@@ -74,7 +74,7 @@ class LogDailyScore extends Component
 
     private function dispatchJobIfWordOfDayExists(DailyScore $score): void
     {
-        if ($wordOfDay = WordOfDay::whereGameId($score->game_id)->first()) {
+        if ($wordOfDay = WordOfDay::where('game_id', $score->game_id)->first()) {
             CheckDailyScoreJob::dispatch(
                 $wordOfDay,
                 $score

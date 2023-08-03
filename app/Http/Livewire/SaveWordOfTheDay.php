@@ -13,6 +13,7 @@ class SaveWordOfTheDay extends Component
     public ?string $word              = null;
     public ?string $word_confirmation = null;
     public ?string $game_id           = null;
+    public ?string $status            = null;
 
     public function render(): Factory | View | Application
     {
@@ -31,5 +32,8 @@ class SaveWordOfTheDay extends Component
                 'word'    => $this->word,
                 'game_id' => $this->game_id,
             ]);
+
+        $this->status = "Word saved.";
+        $this->reset('word', 'game_id');
     }
 }

@@ -6,12 +6,9 @@
     </x-slot>
 
     <div class="py-12">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-                <div class="p-6 text-gray-900">
-                    {{ __("You're logged in!") }}
-                </div>
-            </div>
+        <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8 grid grid-cols-2 gap-6">
+            <livewire:log-daily-score />     
+            <livewire:save-word-of-the-day />     
         </div>
-    </div>
+    </div>  
 </x-app-layout>

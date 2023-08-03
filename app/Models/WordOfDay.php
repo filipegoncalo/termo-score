@@ -25,12 +25,9 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|WordOfDay whereWord($value)
  * @mixin \Eloquent
  */
-
 class WordOfDay extends Model
 {
     use HasFactory;
-
-    protected $guarded = [];
 
     protected $dispatchesEvents = [
         'created' => WordOfDayCreatedEvent::class,
