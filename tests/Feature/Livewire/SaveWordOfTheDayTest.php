@@ -6,12 +6,17 @@ use App\Jobs\CheckDailyScoreJob;
 use App\Models\DailyScore;
 use App\Models\User;
 use App\Models\WordOfDay;
-use Illuminate\Notifications\Action; 
 use Illuminate\Support\Facades\Bus;
 use Illuminate\Support\Facades\Event;
 
 use function Pest\Laravel\actingAs;
 use function Pest\Livewire\livewire;
+
+beforeEach(function () {
+    $user = User::factory()->admin()->create();
+
+    actingAs($user);
+});
 
 it('should be able to save word of the day', function () {
     livewire(SaveWordOfTheDay::class)

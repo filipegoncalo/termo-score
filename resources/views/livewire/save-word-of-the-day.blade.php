@@ -19,7 +19,7 @@
 
                 <x-primary-button class="px-6 py-3">Submit</x-primary-button>
             </x-form>
-
+            
         </x-card>
     </x-container>
 </main>
