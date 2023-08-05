@@ -21,6 +21,7 @@ class SaveWordOfTheDay extends Component
     public function render(): Factory | View | Application
     {
         $this->authorize('admin');
+
         return view('livewire.save-word-of-the-day');
     }
 

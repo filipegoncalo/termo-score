@@ -2,11 +2,19 @@
 
 use App\Http\Livewire\LogDailyScore;
 use App\Models\DailyScore;
+use App\Models\User;
 use App\Models\WordOfDay;
 use App\Rules\WordIsValidRule;
 use Illuminate\Support\Facades\Bus;
 
+use function Pest\Laravel\actingAs;
 use function Pest\Livewire\livewire;
+
+beforeEach(function () {
+    $user = User::factory()->admin()->create();
+
+    actingAs($user);
+});
 
 it('should be able to save the daily score and track the id of the game', function ($score, $expectedGameId, $expectedScore, $expectedDetail) {
     livewire(LogDailyScore::class)
