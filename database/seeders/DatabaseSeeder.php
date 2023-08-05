@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 
+use App\Models\DailyScore;
 use App\Models\User;
 use Illuminate\Database\Seeder;
 
@@ -16,7 +17,7 @@ class DatabaseSeeder extends Seeder
     {
         // \App\Models\User::factory(10)->create();
 
-        User::factory()->admin()->create([
+            User::factory()->admin()->create([
             'name' => 'Filipe Gonçalo',
             'email' => 'filipe@email.com',
         ]);
@@ -25,5 +26,8 @@ class DatabaseSeeder extends Seeder
             'name' => 'Jessica Canuto',
             'email' => 'jessica@email.com',
         ]);
+
+        // DailyScore::factory()->for($filipe, 'user')->count(20)->create();
+        // DailyScore::factory()->for($jess, 'user')->count(20)->create();
     }
 }

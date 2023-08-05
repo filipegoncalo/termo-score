@@ -5,6 +5,7 @@
         </h2>
     </x-slot>
     <x-container>
+        <livewire:daily-scores/>
         <livewire:log-daily-score />
     </x-container>
       
