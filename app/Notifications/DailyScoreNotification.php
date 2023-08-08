@@ -3,6 +3,7 @@
 namespace App\Notifications;
 
 use App\Models\DailyScore;
+use App\Models\User;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
@@ -25,20 +26,22 @@ class DailyScoreNotification extends Notification implements ShouldQueue
      *
      * @return array<int, string>
      */
-    public function via(object $notifiable): array
+    public function via(): array
     {
-        return ['mail'];
+        return ['mail', 'database'];
     }
 
     /**
      * Get the mail representation of the notification.
      */
-    public function toMail(object $notifiable): MailMessage
+    public function toMail(User $notifiable): MailMessage
     {
         return (new MailMessage)
-                    ->line('The introduction to the notification.')
-                    ->action('Notification Action', url('/'))
-                    ->line('Thank you for using our application!');
+            ->greeting($notifiable->name)
+            ->line('Your daily entry was analyzed.')
+            ->line("You got {$this->dailyScore->points} new points.")
+            ->action('Check Your Points', url()->route('dashboard'))
+            ->line('Congratulations 🎉🎉🎉 Jetete!!!');
     }
 
     /**
@@ -46,10 +49,11 @@ class DailyScoreNotification extends Notification implements ShouldQueue
      *
      * @return array<string, mixed>
      */
-    public function toArray(object $notifiable): array
+    public function toArray(User $notifiable): array
     {
         return [
-            //
+            'message' => "Your daily entry was analyzed. You got {$this->dailyScore->points} new points. 🎉",
+            'status'  => 'success',
         ];
     }
 }

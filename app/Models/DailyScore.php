@@ -21,7 +21,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property-read \App\Models\User|null $user
- * @method static \Database\Factories\DailyScoreFactory factory(...$parameters)
+ * @method static \Database\Factories\DailyScoreFactory factory($count = null, $state = [])
  * @method static \Illuminate\Database\Eloquent\Builder|DailyScore newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|DailyScore newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|DailyScore query()

@@ -14,7 +14,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property string $word
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
- * @method static \Database\Factories\WordOfDayFactory factory(...$parameters)
+ * @method static \Database\Factories\WordOfDayFactory factory($count = null, $state = [])
  * @method static \Illuminate\Database\Eloquent\Builder|WordOfDay newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|WordOfDay newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|WordOfDay query()
