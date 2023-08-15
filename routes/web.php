@@ -16,6 +16,8 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
+    ds('ola');
+
     return view('welcome');
 });
 
@@ -23,7 +25,7 @@ Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth'])->name('dashboard');
 
-Route::middleware('can:admin')->group(function(){
+Route::middleware('can:admin')->group(function () {
     Route::get('save-word-of-the-day', SaveWordOfTheDay::class)->name('save-word-of-the-day');
 });
 
@@ -33,4 +35,4 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';
