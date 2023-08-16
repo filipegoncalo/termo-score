@@ -2,7 +2,9 @@
 
 use App\Http\Controllers\ProfileController;
 use App\Http\Livewire\SaveWordOfTheDay;
+use App\Models\User;
 use Illuminate\Support\Facades\Route;
+use Laravel\Socialite\Facades\Socialite;
 
 /*
 |--------------------------------------------------------------------------
@@ -15,9 +17,26 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    ds('ola');
+Route::get('/login/google/redirect', function () {
+    return Socialite::driver('google')->redirect();
+})->name('social.google.redirect');
 
+Route::get('/auth/google/callback', function () {
+    $googleUser = Socialite::driver('google')->user();
+
+    $user = User::query()->firstOrCreate(['email' => $googleUser->email], [
+        'name' => $googleUser->name,
+        'password' => bcrypt(Str::random(10)),
+    ]);
+ 
+    auth()->login($user);
+
+    return redirect()->route('dashboard');
+});
+
+
+
+Route::get('/', function () {
     return view('welcome');
 });
 
