@@ -17,15 +17,16 @@ use Laravel\Socialite\Facades\Socialite;
 |
 */
 
-Route::get('/login/google/redirect', function () {
-    return Socialite::driver('google')->redirect();
-})->name('social.google.redirect');
+Route::get('/login/{driver}/redirect', function ($driver) {
+     Validator::validate(compact('driver'), ['driver' => 'required|in:google,github']);
+    return Socialite::driver($driver)->redirect();
+})->name('auth.social.redirect');
 
-Route::get('/auth/google/callback', function () {
-    $googleUser = Socialite::driver('google')->user();
+Route::get('/auth/{driver}/callback', function ($driver) {
+    $socislUser = Socialite::driver($driver)->user();
 
-    $user = User::query()->firstOrCreate(['email' => $googleUser->email], [
-        'name' => $googleUser->name,
+    $user = User::query()->firstOrCreate(['email' => $socislUser->email], [
+        'name' => $socislUser->name,
         'password' => bcrypt(Str::random(10)),
     ]);
  
@@ -33,8 +34,6 @@ Route::get('/auth/google/callback', function () {
 
     return redirect()->route('dashboard');
 });
-
-
 
 Route::get('/', function () {
     return view('welcome');
